@@ -1,0 +1,14 @@
+.*.swp
+*.suo
+bin
+_ReSharper.*
+obj
+*.gpState
+*.user
+TestResults
+GitTfs/GitVersionInfo
+pkg
+GitTfs.sln.*
+*.dotCover
+Binaries
+packages
