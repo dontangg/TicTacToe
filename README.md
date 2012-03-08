@@ -1,4 +1,4 @@
-#Tic Tac Toe
+# Tic Tac Toe
 
 This is a simple project intended to be a place where I can help my brother learn to code.
 
