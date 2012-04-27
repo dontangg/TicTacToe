@@ -42,6 +42,10 @@ namespace TicTacToe
 
 		private static void PlayGame()
 		{
+			var board = new string[9];
+
+			DrawBoard(board);
+
 			// TODO:
 			// 1. create an string array that will store the positions of all 9 spaces on the board
 			// 2. create a method that will take the string array as a parameter and return a string
@@ -51,6 +55,29 @@ namespace TicTacToe
 			// 5. ask the user to type a number indicating where they would like to put their x or o
 			// 6. make sure that the user typed in a valid option
 			// 7. announce the result of the game
+		}
+
+		private static void DrawBoard(string[] board)
+		{
+			int numRows = (int)Math.Sqrt(board.Length);
+
+			for (int row = 0; row < numRows; row++)
+			{
+				if (row != 0)
+					Console.WriteLine("---|---|---");
+
+				Console.WriteLine("   |   |");
+
+				for (int col = 0; col < numRows; col++)
+				{
+					if (col != 0)
+						Console.Write("|");
+
+					Console.Write(" " + (board[row * numRows + col] ?? " ") + " ");
+				}
+
+				Console.WriteLine("\n   |   |");
+			}
 		}
 
 		private static bool IsBoardFull(string[] board)
