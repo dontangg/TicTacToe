@@ -64,9 +64,9 @@ namespace TicTacToe
 			for (int row = 0; row < numRows; row++)
 			{
 				if (row != 0)
-					Console.WriteLine("---|---|---");
+					Console.WriteLine(string.Join("|", Enumerable.Repeat("---", numRows)));
 
-				Console.WriteLine("   |   |");
+				Console.WriteLine(string.Join("|", Enumerable.Repeat("   ", numRows)));
 
 				for (int col = 0; col < numRows; col++)
 				{
@@ -76,7 +76,7 @@ namespace TicTacToe
 					Console.Write(" " + (board[row * numRows + col] ?? " ") + " ");
 				}
 
-				Console.WriteLine("\n   |   |");
+				Console.WriteLine("\n" + string.Join("|", Enumerable.Repeat("   ", numRows)));
 			}
 		}
 
