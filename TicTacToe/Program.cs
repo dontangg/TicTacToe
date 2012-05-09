@@ -72,21 +72,23 @@ namespace TicTacToe
 			{
 				Console.Clear();
 
-				DrawBoard(board);
-
 				var winner = WhoWins(board);
 				if (winner != null)
 				{
-					AnnounceResult(winner + " WINS!!!");
+					AnnounceResult(winner + " WINS!!!", board);
 					break;
 				}
 				if (IsBoardFull(board))
 				{
-					AnnounceResult("It's a tie!!!");
+					AnnounceResult("It's a tie!!!", board);
 					break;
 				}
 
-				Console.WriteLine("\nUse the arrow keys and press enter to place your " + turn + ".");
+				Console.WriteLine("Place your " + turn + ":");
+
+				DrawBoard(board);
+
+				Console.WriteLine("\nUse the arrow keys and press <enter>");
 
 				var xoLoc = GetXOLocation(board);
 				board[xoLoc] = turn;
@@ -95,10 +97,13 @@ namespace TicTacToe
 			}
 		}
 
-		private static void AnnounceResult(string message)
+		private static void AnnounceResult(string message, string[] board)
 		{
+			Console.WriteLine();
+			DrawBoard(board);
+
 			Console.ForegroundColor = ConsoleColor.DarkGreen;
-			Console.WriteLine("\n" + message);
+			Console.WriteLine(message);
 			Console.ResetColor();
 
 			Console.Write("\nPress any key to continue...");
@@ -125,9 +130,9 @@ namespace TicTacToe
 
 			while (true)
 			{
-				Console.SetCursorPosition(curCol * 4 + 1, curRow * 4 + 1);
+				Console.SetCursorPosition(curCol * 4 + 2, curRow * 4 + 3);
 				var keyInfo = Console.ReadKey();
-				Console.SetCursorPosition(curCol * 4 + 1, curRow * 4 + 1);
+				Console.SetCursorPosition(curCol * 4 + 2, curRow * 4 + 3);
 				Console.Write(board[curRow * numRows + curCol] ?? " ");
 
 				switch (keyInfo.Key)
@@ -161,23 +166,30 @@ namespace TicTacToe
 		{
 			var numRows = (int)Math.Sqrt(board.Length);
 
+			Console.WriteLine();
+
 			for (int row = 0; row < numRows; row++)
 			{
 				if (row != 0)
-					Console.WriteLine(string.Join("|", Enumerable.Repeat("---", numRows)));
+					Console.WriteLine(" " + string.Join("|", Enumerable.Repeat("---", numRows)));
 
-				Console.WriteLine(string.Join("|", Enumerable.Repeat("   ", numRows)));
+				Console.Write(" " + string.Join("|", Enumerable.Repeat("   ", numRows)) + "\n ");
 
 				for (int col = 0; col < numRows; col++)
 				{
 					if (col != 0)
 						Console.Write("|");
-
-					Console.Write(" " + (board[row * numRows + col] ?? " ") + " ");
+					var space = board[row * numRows + col] ?? " ";
+					if (space.Length > 1)
+						Console.ForegroundColor = ConsoleColor.DarkGreen;
+					Console.Write(" " + space[0] + " ");
+					Console.ResetColor();
 				}
 
-				Console.WriteLine("\n" + string.Join("|", Enumerable.Repeat("   ", numRows)));
+				Console.WriteLine("\n " + string.Join("|", Enumerable.Repeat("   ", numRows)));
 			}
+
+			Console.WriteLine();
 		}
 
 		private static bool IsBoardFull(string[] board)
@@ -202,7 +214,12 @@ namespace TicTacToe
 							hasTicTacToe = false;
 					}
 					if (hasTicTacToe)
+					{
+						// Put an indicator in the board to know which ones are part of the tic tac toe
+						for (int col = 0; col < numRows; col++)
+							board[row * numRows + col] += "!";
 						return board[row * numRows];
+					}
 				}
 			}
 
@@ -218,7 +235,12 @@ namespace TicTacToe
 							hasTicTacToe = false;
 					}
 					if (hasTicTacToe)
+					{
+						// Put an indicator in the board to know which ones are part of the tic tac toe
+						for (int row = 0; row < numRows; row++)
+							board[row * numRows + col] += "!";
 						return board[col];
+					}
 				}
 			}
 
@@ -232,7 +254,12 @@ namespace TicTacToe
 						hasTicTacToe = false;
 				}
 				if (hasTicTacToe)
+				{
+					// Put an indicator in the board to know which ones are part of the tic tac toe
+					for (int row = 0; row < numRows; row++)
+						board[row * numRows + row] += "!";
 					return board[0];
+				}
 			}
 			if (board[numRows - 1] != null)
 			{
@@ -243,7 +270,12 @@ namespace TicTacToe
 						hasTicTacToe = false;
 				}
 				if (hasTicTacToe)
+				{
+					// Put an indicator in the board to know which ones are part of the tic tac toe
+					for (int row = 0; row < numRows; row++)
+						board[row * numRows + (numRows - 1 - row)] += "!";
 					return board[numRows - 1];
+				}
 			}
 
 			return null;
