@@ -11,9 +11,11 @@ namespace TicTacToe
 		{
 			bool stillPlaying = true;
 
+			Console.ForegroundColor = ConsoleColor.DarkGreen;
 			Console.WriteLine("-----------------------");
 			Console.WriteLine("Welcome to Tic Tac Toe!");
 			Console.WriteLine("-----------------------\n");
+			Console.ResetColor();
 
 			while (stillPlaying)
 			{
@@ -23,7 +25,7 @@ namespace TicTacToe
 
 				Console.Write("Type a number and hit <enter>: ");
 
-				string choice = Console.ReadLine();
+				string choice = GetUserInput("[12]");
 
 				switch(choice)
 				{
@@ -33,15 +35,35 @@ namespace TicTacToe
 					case "2":
 						stillPlaying = false;
 						break;
-					default:
-						Console.WriteLine("Please enter a valid number...");
-						break;
 				}
 			}
 		}
 
+		private static string GetUserInput(string validPattern = null)
+		{
+			var input = Console.ReadLine();
+			input = input.Trim();
+
+			if (validPattern != null && !System.Text.RegularExpressions.Regex.IsMatch(input, validPattern))
+			{
+				Console.ForegroundColor = ConsoleColor.DarkRed;
+				Console.WriteLine("\"" + input + "\" is not valid.\n");
+				Console.ResetColor();
+				return null;
+			}
+
+			return input;
+		}
+
 		private static void PlayGame()
 		{
+			string numRowsChoice = null;
+			while (numRowsChoice == null)
+			{
+				Console.Write("How many rows do you want to have? (3, 4, or 5) ");
+				numRowsChoice = GetUserInput("[345]");
+			}
+
 			var board = new string[9];
 
 			DrawBoard(board);
