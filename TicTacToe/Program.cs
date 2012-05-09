@@ -31,6 +31,7 @@ namespace TicTacToe
 				{
 					case "1":
 						PlayGame();
+						Console.Clear();
 						break;
 					case "2":
 						stillPlaying = false;
@@ -66,16 +67,88 @@ namespace TicTacToe
 			var boardSize = (int)Math.Pow(int.Parse(numRowsChoice), 2);
 			var board = new string[boardSize];
 
-			DrawBoard(board);
+			var turn = "X";
+			while (true)
+			{
+				Console.Clear();
+
+				DrawBoard(board);
+
+				if (IsBoardFull(board))
+				{
+					Console.ForegroundColor = ConsoleColor.DarkGreen;
+					Console.WriteLine("\nIt's a tie!!!");
+					Console.ResetColor();
+
+					Console.Write("\nPress any key to continue...");
+					Console.CursorVisible = false;
+					Console.ReadKey();
+					Console.CursorVisible = true;
+					break;
+				}
+
+				Console.WriteLine("\nUse the arrow keys and press enter to place your " + turn + ".");
+
+				var xoLoc = GetXOLocation(board);
+				board[xoLoc] = turn;
+
+				turn = turn == "X" ? "O" : "X";
+			}
 
 			// TODO:
 			// * create a method that will take the string array as a parameter and return a string
 			//    indicating who wins (null = no win, "X" = x wins, "O" = o wins). Use IsBoardFull() as an example
-			// * make a loop that keeps going until either someone has won or the board is full
-			// * create a method that takes the string array as a parameter and can output the board
-			// * ask the user to type a number indicating where they would like to put their x or o
-			// * make sure that the user typed in a valid option
 			// * announce the result of the game
+		}
+
+		private static int GetXOLocation(string[] board)
+		{
+			int numRows = (int)Math.Sqrt(board.Length);
+
+			int curRow = 0, curCol = 0;
+			
+			for (int i = 0; i < board.Length; i++)
+			{
+				if (board[i] == null)
+				{
+					curRow = i / numRows;
+					curCol = i % numRows;
+					break;
+				}
+			}
+
+			while (true)
+			{
+				Console.SetCursorPosition(curCol * 4 + 1, curRow * 4 + 1);
+				var keyInfo = Console.ReadKey();
+				Console.SetCursorPosition(curCol * 4 + 1, curRow * 4 + 1);
+				Console.Write(board[curRow * numRows + curCol] ?? " ");
+
+				switch (keyInfo.Key)
+				{
+					case ConsoleKey.LeftArrow:
+						if (curCol > 0)
+							curCol--;
+						break;
+					case ConsoleKey.RightArrow:
+						if (curCol + 1 < numRows)
+							curCol++;
+						break;
+					case ConsoleKey.UpArrow:
+						if (curRow > 0)
+							curRow--;
+						break;
+					case ConsoleKey.DownArrow:
+						if (curRow + 1 < numRows)
+							curRow++;
+						break;
+					case ConsoleKey.Spacebar:
+					case ConsoleKey.Enter:
+						if (board[curRow * numRows + curCol] == null)
+							return curRow * numRows + curCol;
+						break;
+				}
+			}
 		}
 
 		private static void DrawBoard(string[] board)
