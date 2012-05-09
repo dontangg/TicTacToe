@@ -75,7 +75,7 @@ namespace TicTacToe
 				var winner = WhoWins(board);
 				if (winner != null)
 				{
-					AnnounceResult(winner + " WINS!!!", board);
+					AnnounceResult(winner[0] + " WINS!!!", board);
 					break;
 				}
 				if (IsBoardFull(board))
@@ -244,7 +244,7 @@ namespace TicTacToe
 				}
 			}
 
-			// Check diagonals
+			// Check top left -> bottom right diagonal
 			if (board[0] != null)
 			{
 				hasTicTacToe = true;
@@ -261,6 +261,8 @@ namespace TicTacToe
 					return board[0];
 				}
 			}
+
+			// Check top right -> bottom left diagonal
 			if (board[numRows - 1] != null)
 			{
 				hasTicTacToe = true;
