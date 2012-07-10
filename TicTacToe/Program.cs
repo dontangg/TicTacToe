@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TicTacToe
 {
@@ -192,7 +191,7 @@ namespace TicTacToe
 			Console.WriteLine();
 		}
 
-		private static bool IsBoardFull(string[] board)
+		private static bool IsBoardFull(IEnumerable<string> board)
 		{
 			return board.All(space => space != null);
 		}
@@ -200,14 +199,13 @@ namespace TicTacToe
 		private static string WhoWins(string[] board)
 		{
 			var numRows = (int)Math.Sqrt(board.Length);
-			var hasTicTacToe = true;
-
+			
 			// Check rows
 			for (int row = 0; row < numRows; row++)
 			{
 				if (board[row * numRows] != null)
 				{
-					hasTicTacToe = true;
+					bool hasTicTacToe = true;
 					for (int col = 1; col < numRows && hasTicTacToe; col++)
 					{
 						if (board[row * numRows + col] != board[row * numRows])
@@ -228,7 +226,7 @@ namespace TicTacToe
 			{
 				if (board[col] != null)
 				{
-					hasTicTacToe = true;
+					bool hasTicTacToe = true;
 					for (int row = 1; row < numRows && hasTicTacToe; row++)
 					{
 						if (board[row * numRows + col] != board[col])
@@ -247,7 +245,7 @@ namespace TicTacToe
 			// Check top left -> bottom right diagonal
 			if (board[0] != null)
 			{
-				hasTicTacToe = true;
+				bool hasTicTacToe = true;
 				for (int row = 1; row < numRows && hasTicTacToe; row++)
 				{
 					if (board[row * numRows + row] != board[0])
@@ -265,7 +263,7 @@ namespace TicTacToe
 			// Check top right -> bottom left diagonal
 			if (board[numRows - 1] != null)
 			{
-				hasTicTacToe = true;
+				bool hasTicTacToe = true;
 				for (int row = 1; row < numRows && hasTicTacToe; row++)
 				{
 					if (board[row * numRows + (numRows - 1 - row)] != board[numRows - 1])
