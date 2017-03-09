@@ -8,6 +8,7 @@ namespace TicTacToe
 	{
 		static void Main(string[] args)
 		{
+            // Create main game menu and get option.
 			var stillPlaying = true;
 
 			Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -39,6 +40,11 @@ namespace TicTacToe
 			}
 		}
 
+        /// <summary>
+        /// Reads the user input validating against a regex pattern.
+        /// </summary>
+        /// <param name="validPattern">Regex string for input validation.</param>
+        /// <returns>Returns the valid input or null if not valid.</returns>
 		private static string GetUserInput(string validPattern = null)
 		{
 			var input = Console.ReadLine();
@@ -55,8 +61,12 @@ namespace TicTacToe
 			return input;
 		}
 
+        /// <summary>
+        /// Starts the game session.
+        /// </summary>
 		private static void PlayGame()
 		{
+            // Setting up the board and game before main loop.
 			string numRowsChoice = null;
 			while (numRowsChoice == null)
 			{
@@ -67,10 +77,14 @@ namespace TicTacToe
 			var board = new string[boardSize];
 
 			var turn = "X";
+
+            // Main game loop.
 			while (true)
 			{
+                // Refresh and clear everything.
 				Console.Clear();
 
+                // Determine if game is over.
 				var winner = WhoWins(board);
 				if (winner != null)
 				{
@@ -83,6 +97,7 @@ namespace TicTacToe
 					break;
 				}
 
+                // User turn.
 				Console.WriteLine("Place your " + turn + ":");
 
 				DrawBoard(board);
@@ -92,10 +107,16 @@ namespace TicTacToe
 				var xoLoc = GetXOLocation(board);
 				board[xoLoc] = turn;
 
+                // Flip the turn to the next player.
 				turn = turn == "X" ? "O" : "X";
 			}
 		}
 
+        /// <summary>
+        /// Displays the result to the console.
+        /// </summary>
+        /// <param name="message">The message to be displayed.</param>
+        /// <param name="board">The board to draw.</param>
 		private static void AnnounceResult(string message, string[] board)
 		{
 			Console.WriteLine();
@@ -111,8 +132,15 @@ namespace TicTacToe
 			Console.CursorVisible = true;
 		}
 
+        /// <summary>
+        /// Get the location where the user wants to place an 'X' or 'O'.
+        /// The input is read from the user and the location on board is determined.
+        /// </summary>
+        /// <param name="board">Array of current board.</param>
+        /// <returns>The index to place the next element.</returns>
 		private static int GetXOLocation(string[] board)
 		{
+            // Calculate where the end of the rows and columns are.
 			int numRows = (int)Math.Sqrt(board.Length);
 
 			int curRow = 0, curCol = 0;
@@ -127,6 +155,7 @@ namespace TicTacToe
 				}
 			}
 
+            // Reading in navigation input and element placement.
 			while (true)
 			{
 				Console.SetCursorPosition(curCol * 4 + 2, curRow * 4 + 3);
@@ -154,6 +183,7 @@ namespace TicTacToe
 						break;
 					case ConsoleKey.Spacebar:
 					case ConsoleKey.Enter:
+                        // The element has been placed.
 						if (board[curRow * numRows + curCol] == null)
 							return curRow * numRows + curCol;
 						break;
@@ -161,12 +191,17 @@ namespace TicTacToe
 			}
 		}
 
+        /// <summary>
+        /// Renders the board.
+        /// </summary>
+        /// <param name="board">the board data to render.</param>
 		private static void DrawBoard(string[] board)
 		{
 			var numRows = (int)Math.Sqrt(board.Length);
 
 			Console.WriteLine();
 
+            // Build up the board by row.
 			for (int row = 0; row < numRows; row++)
 			{
 				if (row != 0)
@@ -191,11 +226,21 @@ namespace TicTacToe
 			Console.WriteLine();
 		}
 
+        /// <summary>
+        /// Determines if the board is full.
+        /// </summary>
+        /// <param name="board">The board data.</param>
+        /// <returns>True if board is full, false otherwise.</returns>
 		private static bool IsBoardFull(IEnumerable<string> board)
 		{
 			return board.All(space => space != null);
 		}
 
+        /// <summary>
+        /// Calculates the winner of the game for a given board.
+        /// </summary>
+        /// <param name="board">The board data to check.</param>
+        /// <returns>The element type of the winner.</returns>
 		private static string WhoWins(string[] board)
 		{
 			var numRows = (int)Math.Sqrt(board.Length);
