@@ -65,6 +65,7 @@ namespace TicTacToe
         /// </summary>
 		private static void PlayGame()
 		{
+            // Setting up the board and game before main loop.
 			string numRowsChoice = null;
 			while (numRowsChoice == null)
 			{
@@ -75,10 +76,14 @@ namespace TicTacToe
 			var board = new string[boardSize];
 
 			var turn = "X";
+
+            // Main game loop.
 			while (true)
 			{
+                // Refresh and clear everything.
 				Console.Clear();
 
+                // Determine if game is over.
 				var winner = WhoWins(board);
 				if (winner != null)
 				{
@@ -91,6 +96,7 @@ namespace TicTacToe
 					break;
 				}
 
+                // User turn.
 				Console.WriteLine("Place your " + turn + ":");
 
 				DrawBoard(board);
@@ -100,6 +106,7 @@ namespace TicTacToe
 				var xoLoc = GetXOLocation(board);
 				board[xoLoc] = turn;
 
+                // Flip the turn to the next player.
 				turn = turn == "X" ? "O" : "X";
 			}
 		}
@@ -132,6 +139,7 @@ namespace TicTacToe
         /// <returns>The index to place the next element.</returns>
 		private static int GetXOLocation(string[] board)
 		{
+            // Calculate where the end of the rows and columns are.
 			int numRows = (int)Math.Sqrt(board.Length);
 
 			int curRow = 0, curCol = 0;
@@ -146,6 +154,7 @@ namespace TicTacToe
 				}
 			}
 
+            // Reading in navigation input and element placement.
 			while (true)
 			{
 				Console.SetCursorPosition(curCol * 4 + 2, curRow * 4 + 3);
@@ -173,6 +182,7 @@ namespace TicTacToe
 						break;
 					case ConsoleKey.Spacebar:
 					case ConsoleKey.Enter:
+                        // The element has been placed.
 						if (board[curRow * numRows + curCol] == null)
 							return curRow * numRows + curCol;
 						break;
@@ -190,6 +200,7 @@ namespace TicTacToe
 
 			Console.WriteLine();
 
+            // Build up the board by row.
 			for (int row = 0; row < numRows; row++)
 			{
 				if (row != 0)
