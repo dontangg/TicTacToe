@@ -8,6 +8,7 @@ namespace TicTacToe
 	{
 		static void Main(string[] args)
 		{
+            // Create main game menu and get option.
 			var stillPlaying = true;
 
 			Console.ForegroundColor = ConsoleColor.DarkGreen;
